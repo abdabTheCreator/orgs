@@ -22,4 +22,7 @@
   kubectl get service -l=app.kubernetes.io/name=ingress-nginx,app.kubernetes.io/component=controller --namespace=okteto
 #+end_src
 
-
+#+name get okteto pods
+#+begin_src bash
+  kubectl get pods -n okteto
+#+end_src
