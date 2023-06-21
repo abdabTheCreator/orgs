@@ -1,34 +1,23 @@
 #+title: ii okteto
-#+begin_export config.yaml
-  license: 1234567890ABCD==
-  subdomain: dev.example.com
-  cluster:
-    endpoint: "https://XXXXXX.gr7.us-west-2.eks.amazonaws.com"
 
-  buildkit:
-    ingress:
-      enabled: false
-    service:
-      type: LoadBalancer
-#+end_export
-
-#+name: command1
-#+begin_src bash
-  kubectl config view --minify | grep server
-#+end_src
-
-#+name: command2
+#+name: add okteto charts
 #+begin_src bash
   helm repo add okteto https://charts.okteto.com
   helm repo update
 #+end_src
 
-#+name: command3
+#+name: install config 
 #+begin_src bash
-   helm install okteto okteto/okteto -f config.yaml --namespace=okteto --create-namespace
+  IP=$(cloud-init query -f “{{ds.meta_data.public_ipv4}}“)
+  helm install okteto okteto/okteto -f /etc/cloud/values-okteto.yaml --namespace=okteto --create-namespace --set ingress.ip=$IP 
 #+end_src
 
-#+name: command4
+#+name: set wildcard secrets
+#+begin_src bash
+  kubectl get secret wildcard-tls --namespace=ingres-nginx -o yaml | sed ‘s/namespace: .*/namespace: okteto/’ | kubectl apply -f -
+#+end_src
+
+#+name: get service
 #+begin_src bash
   kubectl get service -l=app.kubernetes.io/name=ingress-nginx,app.kubernetes.io/component=controller --namespace=okteto
 #+end_src
