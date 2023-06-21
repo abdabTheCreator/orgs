@@ -1,0 +1,22 @@
+#+title: David
+
+* add helm repo
+#+name: Add helm repo
+#+begin_src tmux :session ":install"
+  helm repo add okteto https://charts.okteto.com
+#+end_src
+
+* create ns
+#+begin_src tmux :session ":install"
+kubectl create ns okteto
+#+end_src
+* copy wildcard-tls
+#+begin_src tmux :session ":install"
+kubectl get secret wildcard-tls --namespace=ingress-nginx -o yaml | sed 's/namespace: .*/namespace: okteto/' | kubectl apply -f -
+#+end_src
+* apply helm manifest & chart
+* helm install
+#+name: Add helm repo
+#+begin_src tmux :session ":install"
+kubectl apply -f okteto-release.yaml
+#+end_src
