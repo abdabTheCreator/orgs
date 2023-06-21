@@ -14,7 +14,7 @@
 
 #+name: set wildcard secrets
 #+begin_src bash
-  kubectl get secret wildcard-tls --namespace=ingres-nginx -o yaml | sed ‘s/namespace: .*/namespace: okteto/’ | kubectl apply -f -
+  kubectl get secret wildcard-tls --namespace=ingress-nginx -o yaml | sed ‘s/namespace: .*/namespace: okteto/’ | kubectl apply -f -
 #+end_src
 
 #+name: get service
